@@ -78,4 +78,6 @@ theme: showonne
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type:
+  type: git
+  repo: https://gh_token@github.com/showonne/showonne.github.io.git
+  branch: master
