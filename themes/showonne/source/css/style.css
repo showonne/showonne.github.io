@@ -466,3 +466,10 @@ footer {
 
 .line {
   margin-right: 10px; }
+
+.feedback-btn{
+  position: fixed;
+  right: 60px;
+  bottom : 70px;
+  font-size: 18px;
+}
