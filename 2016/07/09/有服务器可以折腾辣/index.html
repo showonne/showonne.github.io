@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Hexo</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/tomorrow-night.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+    <header>
+    <span class="banner"><a href="/">Hexo</a></span>
+    <span class="menu">Menu</span>
+    <ul class="menu_list hide">
+        
+            <li><a href="/">Home</a></li>
+        
+            <li><a href="/archives">Archives</a></li>
+        
+            <li><a href="/tags">Tags</a></li>
+        
+            <li><a href="/links">Links</a></li>
+        
+            <li><a href="/about">About</a></li>
+        
+    </ul>
+</header>
+    <div class="main">
+        
+    <article>
+    <h1 class="post-title">
+        <span>有服务器可以折腾辣</span>
+    </h1>
+    <section class="post-content">
+        
+            
+        
+        <p>前面一直用室友服务器搭的ss服务器翻墙，然后竟然被查封了账号(脸是有多黑）,我电脑上的蓝灯也罢工了，最后想想还是自己买一个服务器玩玩吧，没事还可以多折腾折腾，今天在<a href="https://bandwagonhost.com/index.php" target="_blank" rel="noopener">搬瓦工</a>买了一个VPS，5刀每月的，一天一块钱，还挺不错的。</p>
+<a id="more"></a>
+<p>最初自动给你创建的服务器是CentOS 6的，可以在<code>KiViVM Control Panel</code>中看到基本情况，IP和SSH Port，现在的默认密码不再通过邮件发送了，因此想要修改默认密码，就通过<strong>Root shell - interactive</strong>登陆进去然后执行<code>passwd root</code>来修改密码吧。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/134656-1cae4c22f168f4e1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>另外默认的SSH Port也不是默认的22，而是一个随机端口，此时通过ssh登陆就要指定<code>-p</code>参数了，当然也可以修改，通过<code>vim</code>编辑<code>/etc/ssh/sshd_config</code>,可以将<code>Port</code>设置为22，然后执行<code>/etc/init.d/sshd restart</code>。</p>
+<p><code>KiWiVM Control Panel</code>中还能进行很多操作，一键搭建VPN Server, Shoadowsocks Server等，以后再慢慢研究。</p>
+<p>服务器选择的是CentOS6，因为就这个可以自动部署Shadowsocks Server，省着自己弄了，而且做服务器的话，CentOS也可以吧，虽然我不知道和Ubuntu有什么区别。有了服务器，就要开始搭环境了，暂时没什么需要弄的，先把<code>nginx</code>和<code>nodejs</code>安装好。</p>
+<h4 id="yum"><a href="#yum" class="headerlink" title="yum"></a>yum</h4><p>yum是CentOS下默认安装的一个包管理器,yum默认配置分为两部分<code>main</code>(在<code>/etc/yum.config</code>下)进行全局配置，<code>repository</code>进行具体源/服务器的配置(在<code>/etc/yum.repo.d/</code>)下的各种<code>.repo</code>文件。</p>
+<h4 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h4><p><a href="https://www.nginx.com/resources/wiki/start/topics/tutorials/install/#" target="_blank" rel="noopener">此方法</a>其实就是通过配置本地的yum源来安装的，为每个包在<code>/etc/yum.repos.d</code>下创建对应的<code>pkgname.repo</code>。格式为:</p>
+<pre><code>[serverid]
+name=servername
+baseurl=path/to/repo
+</code></pre><ul>
+<li><code>serverid</code>是服务id，与<code>yum install reponame</code> 中的<code>reponame</code>对应。</li>
+<li><code>name</code>是对repo的描述，一般就简单写一下，eg：<code>nginx repo</code>，不过也支持像<code>$releasever</code>,<code>$basearch</code>这样的变量。</li>
+<li><code>baseurl</code>是repo的地址，后面可以接多个url但是<code>baseurl</code>只能有一个。</li>
+</ul>
+<p>关于变量<br><code>$releasever</code>：代表发行版的版本，从<code>[main]</code>部分的<code>distroverpkg</code>获取，如果没有，则根据<code>redhat-release</code>包进行判断。<br><code>$arch</code>: cpu体系，如i686,athlon等<br><code>$basearch</code>：cpu的基本体系组，如i686和athlon同属i386，alpha和alphaev6同属alpha。</p>
+<p>参考自<a href="http://www.cnblogs.com/mchina/archive/2013/01/04/2842275.html" target="_blank" rel="noopener">博客园这篇</a></p>
+<p>所以安装<code>nginx</code>就是这样的:<br>1.在<code>/etc/yum.repos.d</code>下新建一个<code>nginx.repo</code><br>内容如下:</p>
+<pre><code>[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
+gpgcheck=0
+enabled=1
+</code></pre><p>然后<code>yum install nginx -y</code>即可，nginx会安装在<code>/etc/nginx</code>下</p>
+<h4 id="nodejs"><a href="#nodejs" class="headerlink" title="nodejs"></a>nodejs</h4><p>参考了<a href="https://nodejs.org/en/download/package-manager/" target="_blank" rel="noopener">Enterprise Linux and Fedora</a>。</p>
+<h4 id="然后"><a href="#然后" class="headerlink" title="然后"></a>然后</h4><p>有了一个自己的小服务器，以后可以折腾折腾了，用来熟悉Linux环境。</p>
+
+    </section>
+    
+        <section id="comments">
+        
+        </section>
+    
+</article>
+
+    </div>
+    <button class="feedback-btn" data-feedbackok-trigger>Hello~ 🥰</button>
+    <footer>
+    <div class="info"><span>Powered By <a href="https://hexo.io/" target="blank">Hexo</a></span>&nbsp;&nbsp;&nbsp;&nbsp;<span>Theme by <a href="https://github.com/showonne/hexo_showonne" target="blank">Showonne</a></span></div>
+</footer>
+    <script src="https://cdn.feedbackok.com/widget.js" data-pid="0m524p3" async defer></script>
+    <script src="/js/index.js"></script>
+</body>
+</html>

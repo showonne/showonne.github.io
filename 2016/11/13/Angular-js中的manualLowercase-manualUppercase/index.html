@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Hexo</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/tomorrow-night.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+    <header>
+    <span class="banner"><a href="/">Hexo</a></span>
+    <span class="menu">Menu</span>
+    <ul class="menu_list hide">
+        
+            <li><a href="/">Home</a></li>
+        
+            <li><a href="/archives">Archives</a></li>
+        
+            <li><a href="/tags">Tags</a></li>
+        
+            <li><a href="/links">Links</a></li>
+        
+            <li><a href="/about">About</a></li>
+        
+    </ul>
+</header>
+    <div class="main">
+        
+    <article>
+    <h1 class="post-title">
+        <span>Angular.js中的manualLowercase/manualUppercase</span>
+    </h1>
+    <section class="post-content">
+        
+            
+        
+        <p>今天在看Angular源码时看到了这么一段：</p>
+<pre><code>// src/Angular.js
+var lowercase = function(string) {return isString(string) ? string.toLowerCase() : string;};
+var uppercase = function(string) {return isString(string) ? string.toUpperCase() : string;};
+
+var manualLowercase = function(s) {
+  /* eslint-disable no-bitwise */
+  return isString(s)
+      ? s.replace(/[A-Z]/g, function(ch) {return String.fromCharCode(ch.charCodeAt(0) | 32);})
+      : s;
+  /* eslint-enable */
+};
+var manualUppercase = function(s) {
+  /* eslint-disable no-bitwise */
+  return isString(s)
+      ? s.replace(/[a-z]/g, function(ch) {return String.fromCharCode(ch.charCodeAt(0) &amp; ~32);})
+      : s;
+  /* eslint-enable */
+};
+</code></pre><p>前两个函数很容易就看出来了，用来进行大小写转换，后两个函数明显也是进行大小写转换，只是通过位运算来进行。但是为什么要这么写呢？</p>
+<a id="more"></a>
+<p><code>String.fromCharCode</code>是一个静态方法，根据指定的Unicode编码中的序号值返回一个字符串。</p>
+<pre><code>String.fromCharCode(num1, ..., numN) 
+
+String.fromCharCode(65, 66, 67) // &apos;ABC&apos;
+</code></pre><p><code>ch.charCodeAt()</code>返回0到65535之间的整数，表示索引处字符串的UTF-16编码单元。</p>
+<pre><code>str.charCodeAt(index)
+
+&apos;ABC&apos;.charCodeAt(0) //65
+&apos;ABC&apos;.charCodeAt(1) //66
+&apos;ABC&apos;.charCodeAt(2) //67
+</code></pre><p>Angular.js里把这个函数重写的是因为<code>String.prototype.toLocaleLowerCase()</code>表现不一致。</p>
+<blockquote>
+<p>toLocaleLowerCase()方法返回调用该方法的字符串被转换成小写之后的值，转换规则根据任何本地化特定的大小写映射。toLocaleLowerCase()并不会影响字符串自身的值。在大多数情况下，该方法产生的结果和调用toLowerCase()的结果相同，但是在某些本地环境中，比如土耳其语，它的大小写映射并不遵循在Unicode中的默认的大小写映射，因此会有一个不同的结果。<br>-摘自MDN的描述</p>
+</blockquote>
+<p>差异就在土耳其和其它的本地化映射不一致。</p>
+<p>所以这个函数是把字符串严格按照Unicode来进行映射了一遍，中间通过位运算处理了一下大小写转换(同一个字母大小写之间的ASCII差了32)。</p>
+<p>那么问题来了，<code>String.prototype.toLocaleLowerCase()</code>有问题，为什么要重写<code>toLowerCase</code>?<a href="https://github.com/angular/angular.js/issues/11387" target="_blank" rel="noopener">看这个issue</a>里面的讨论仿佛在说这段代码更像是对老浏览器的hack方法，所以现在可有可无了。</p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/charCodeAt" target="_blank" rel="noopener">String.prototype.charCodeAt()</a></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode" target="_blank" rel="noopener">String.fromCharCode()</a></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/toLocaleLowerCase" target="_blank" rel="noopener">String.prototype.toLocaleLowerCase()</a></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators" target="_blank" rel="noopener">按位操作符</a></p>
+
+    </section>
+    
+        <section id="comments">
+        
+        </section>
+    
+</article>
+
+    </div>
+    <button class="feedback-btn" data-feedbackok-trigger>Hello~ 🥰</button>
+    <footer>
+    <div class="info"><span>Powered By <a href="https://hexo.io/" target="blank">Hexo</a></span>&nbsp;&nbsp;&nbsp;&nbsp;<span>Theme by <a href="https://github.com/showonne/hexo_showonne" target="blank">Showonne</a></span></div>
+</footer>
+    <script src="https://cdn.feedbackok.com/widget.js" data-pid="0m524p3" async defer></script>
+    <script src="/js/index.js"></script>
+</body>
+</html>
