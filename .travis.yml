@@ -1,0 +1,28 @@
+language: node_js
+
+sudo: required
+
+node_js:
+  - '10'
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
+branches:
+  only:
+    - source 
+
+install:
+  - yarn
+
+script:
+  - hexo clean
+  - hexo generate
+
+after_script:
+  - git config user.name "showonne"
+  - git config user.email "showone896@gmail.com"
+  - sed -i "s/gh_token/${ACCESS_TOKEN}/g" ./_config.yml
+  - hexo deploy

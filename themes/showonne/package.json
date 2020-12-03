@@ -1,0 +1,20 @@
+{
+  "name": "showonne",
+  "version": "1.0.0",
+  "description": "hexo theme",
+  "main": "index.js",
+  "scripts": {
+    "build": "node-sass source/sass/style.scss source/css/style.css --output-style compressed",
+    "dev": "node-sass source/sass/style.scss source/css/style.css --watch"
+  },
+  "keywords": [
+    "hexo",
+    "theme",
+    "showonne"
+  ],
+  "author": "showonne",
+  "license": "MIT",
+  "devDependencies": {
+    "node-sass": "^3.4.2"
+  }
+}
