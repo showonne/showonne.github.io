@@ -12,7 +12,7 @@ cache:
 
 branches:
   only:
-    - source 
+    - master 
 
 install:
   - yarn
