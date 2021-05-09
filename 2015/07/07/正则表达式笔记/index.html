@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Hexo</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/tomorrow-night.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+    <header>
+    <span class="banner"><a href="/">Hexo</a></span>
+    <span class="menu">Menu</span>
+    <ul class="menu_list hide">
+        
+            <li><a href="/">Home</a></li>
+        
+            <li><a href="/archives">Archives</a></li>
+        
+            <li><a href="/tags">Tags</a></li>
+        
+            <li><a href="/links">Links</a></li>
+        
+            <li><a href="/about">About</a></li>
+        
+    </ul>
+</header>
+    <div class="main">
+        
+    <article>
+    <h1 class="post-title">
+        <span>正则表达式笔记</span>
+    </h1>
+    <section class="post-content">
+        
+            
+        
+        <p>正则表达式的常用语法:</p>
+<pre><code>\:将其下一个字符转义(\\匹配&quot;\&quot;，\n匹配换行)
+^,$:匹配开始，结束位置
+*，+，？：表示{0,n},{1,n},{0,1}次匹配前面的字或表达式
+{n}:表示匹配n次前面的字符或表达式
+?:当此字符紧随任何其他限定符（*、+、?、{n}、{n,}、{n,m}）之后时，匹配模式是“非贪心的”(匹配尽量短的字符)
+(pattern):匹配 pattern 并捕获该匹配的子表达式,可以使用$1-$9从匹配集合中检索捕获的匹配
+x|y：x或y
+[xyz],[^xyz]:匹配包含(，未包含)的任意字符
+[a-z]：a-z
+
+\b:匹配边界，例如er\b匹配never的er，不匹配verb的er
+\d:匹配数字0-9
+\w:匹配0-9,a-z,A-Z和下划线
+\s:匹配任何空白符
+</code></pre><p>正则表达式优先级:(从高到低)</p>
+<pre><code>\
+(),[]
+*，+，？，{n,m}
+^,$,\任何元字符，任何字符
+|
+</code></pre><a id="more"></a>
+<p>正则表达式的几个属性:</p>
+<pre><code>const reg = /show/igm
+reg.global //true
+reg.ignoreCase //true
+reg.multiline //true
+reg.source //&apos;show&apos;
+reg.lastIndex //0 这个值在g参数开启时才有效
+</code></pre><p>常用方法:</p>
+<pre><code>//test,exec在g参数开启时都会在上一次的位置继续匹配
+reg.test(str) //该方法返回布尔值
+reg.exec(str) //该方法返回匹配到的值或者null，
+//组匹配先返回整个匹配结果，再返回括号内的匹配结果。
+//返回值还有input, index两个属性。index从0开始计数。
+
+String.prototype.match() //
+</code></pre><ul>
+<li><code>(?:x)</code>为非捕获组<code>&#39;h1&#39;.match(/(?:h1)/)</code>返回值为<code>[&#39;h1&#39;]</code>而不是<code>[&#39;h1&#39;, &#39;h1&#39;]</code></li>
+<li><code>x(?=y)</code>先行断言，<code>x</code>在<code>y</code>前面时才匹配。</li>
+<li><code>x(?!y)</code>先行否定断言，<code>x</code>不在<code>y</code>前面时才匹配。</li>
+</ul>
+<p><a href="http://javascript.ruanyifeng.com/stdlib/regexp.html" target="_blank" rel="noopener">参考文章</a></p>
+
+    </section>
+    
+        <section id="comments">
+        
+        </section>
+    
+</article>
+
+    </div>
+    <button class="feedback-btn" data-feedbackok-trigger>Hello~ 🥰</button>
+    <footer>
+    <div class="info"><span>Powered By <a href="https://hexo.io/" target="blank">Hexo</a></span>&nbsp;&nbsp;&nbsp;&nbsp;<span>Theme by <a href="https://github.com/showonne/hexo_showonne" target="blank">Showonne</a></span></div>
+</footer>
+    <script src="https://cdn.feedbackok.com/widget.js" data-pid="0m524p3" async defer></script>
+    <script src="/js/index.js"></script>
+</body>
+</html>
