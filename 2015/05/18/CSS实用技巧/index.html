@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <title>showonne</title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/tomorrow-night.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+    <header>
+    <span class="banner"><a href="/">showonne</a></span>
+    <span class="menu">Menu</span>
+    <ul class="menu_list hide">
+        
+            <li><a href="/" >Home</a></li>
+        
+            <li><a href="/archives" >Archives</a></li>
+        
+            <li><a href="/tags" >Tags</a></li>
+        
+            <li><a href="/links" >Links</a></li>
+        
+            <li><a href="/about" >About</a></li>
+        
+    </ul>
+</header>
+    <div class="main">
+        
+    <article>
+    <h1 class='post-title'>
+        <span>CSS实用技巧</span>
+    </h1>
+    <section class='post-content'>
+        
+            
+        
+        <p>一些前端开发过程中的使用技巧,在这里做一下笔记,在学习的过程中不断更新。</p>
+<span id="more"></span>
+<p>1.全屏背景图片固定效果</p>
+<pre><code>&#123;
+    background: url(&quot;path/to/img&quot;) no-repeat center center fixed;
+    background-size: cover;
+&#125;
+</code></pre><p>2.使用CSS绘制三角形</p>
+<pre><code>//三角形的颜色为border-bottom的颜色
+&#123;
+    height: 0;
+    width: 0;
+    border-bottom: 50px solid #ccc;
+    border-right:  40px solid transparent;
+    border-left:  40px solid transparent;
+&#125;
+</code></pre><p>3.将元素定位到页面正中心</p>
+<pre><code>&#123;
+    height: 100px;
+    width: 200px;
+    background-color: #ccc;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -50px;
+    margin-left: -100px;
+&#125;
+</code></pre><p>4.表格列宽自适应</p>
+<pre><code>td&#123;
+    white-space: nowrap;
+&#125;
+</code></pre><p>5.包裹长文本时自动换行</p>
+<pre><code>&#123;
+    white-space: pre-line;
+    word-wrap: break-word;
+    border: 1px solid #ccc;
+    width: 100px;
+&#125;
+</code></pre><p>6.使用box-shadow模拟outline圆角效果</p>
+<pre><code>//利用box-shadow第四个参数放大投影范围的作用，实际上是将1px的border-radius放大
+target&#123;
+    border-radius: 1px;
+    box-shadow:0 0 0 15px #ccc;
+&#125;
+</code></pre><p>7.让图片随着父容器的大小变化而变化</p>
+<pre><code>//为图片添加max-width:100%,它们的尺寸就会跟随它们的父元素一样扩展和收缩，就能自适应各种平面尺寸/分辨率的移动设备了。
+img&#123;
+  max-width: 100%;
+&#125;
+</code></pre><p>8.文字溢出部分用…代替</p>
+<pre><code>div&#123;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+&#125;
+</code></pre>
+    </section>
+    
+        <section id="comments">
+        
+        </section>
+    
+</article>
+
+    </div>
+    <button class="feedback-btn" data-feedbackok-trigger>Hello~ 🥰</button>
+    <footer>
+    <div class="info"><span>Powered By <a href="https://hexo.io/" target="blank">Hexo</a></span>&nbsp;&nbsp;&nbsp;&nbsp;<span>Theme by <a href="https://github.com/showonne/hexo_showonne" target="blank">Showonne</a></span></div>
+</footer>
+    <script
+        src="https://cdn.feedbackok.com/widget.js"
+        data-pid="0m524p3"
+        async
+        defer
+    ></script>
+    
+<script src="/js/index.js"></script>
+
+</body>
+</html>

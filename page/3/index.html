@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <title>showonne</title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/tomorrow-night.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+    <header>
+    <span class="banner"><a href="/">showonne</a></span>
+    <span class="menu">Menu</span>
+    <ul class="menu_list hide">
+        
+            <li><a href="/" >Home</a></li>
+        
+            <li><a href="/archives" >Archives</a></li>
+        
+            <li><a href="/tags" >Tags</a></li>
+        
+            <li><a href="/links" >Links</a></li>
+        
+            <li><a href="/about" >About</a></li>
+        
+    </ul>
+</header>
+    <div class="main">
+        
+    
+    <article>
+    <h4 class="post-title"><i class="iconfont">&#xe609;</i><a href="/2015/12/23/Sublime-Text-3-%E4%B8%AA%E4%BA%BA%E9%85%8D%E7%BD%AE/">Sublime Text 3 个人配置</a></h4>
+    <h6 class="date"><i class="iconfont">&#xf0069;</i>2015-12-23</h6>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Sublime/" rel="tag">Sublime</a></li></ul>
+    <section class="md post-content">
+        
+            
+        
+        
+            <p>Sublime Text 3 个人配置。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://packagecontrol.io/installation">package control</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/sergeche/emmet-sublime#readme">Emmet</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/equinusocio/material-theme">material-theme</a></li>
+</ul>
+<p>个人配置:</p>
+<pre><code>&#123;
+    &quot;color_scheme&quot;: &quot;Packages/Theme - Spacegray/base16-eighties.dark.tmTheme&quot;,
+    &quot;font_size&quot;: 14,
+    &quot;ignored_packages&quot;:
+    [
+        &quot;Vintage&quot;
+    ],
+    &quot;markdown_binary_map&quot;:
+    &#123;
+        &quot;multimarkdown&quot;:
+        [
+            &quot;/usr/local/bin/multimarkdown&quot;
+        ]
+    &#125;,
+    &quot;theme&quot;: &quot;Material-Theme.sublime-theme&quot;,
+    &quot;color_scheme&quot;: &quot;Packages/Material Theme/schemes/Material-Theme.tmTheme&quot;,
+    &quot;hot_exit&quot;: true,
+    &quot;remember_open_files&quot;: true,
+
+    &quot;translate_tabs_to_spaces&quot;: true,
+    &quot;tab_size&quot;: 4
+&#125;
+</code></pre><p><strong>Mac下点击关闭窗口(红点)相当于关闭文件，因此需要用<code>cmd + q</code>关闭Sublime<br>，下次打开时才会保存上次打开的文件。囧</strong></p>
+
+        
+    </section>
+    
+</article>
+
+
+    
+    <article>
+    <h4 class="post-title"><i class="iconfont">&#xe609;</i><a href="/2015/08/06/2015-8-6-%E7%AC%94%E8%AE%B0/">2015.8.6 笔记</a></h4>
+    <h6 class="date"><i class="iconfont">&#xf0069;</i>2015-08-06</h6>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/" rel="tag">代码优化</a></li></ul>
+    <section class="md post-content">
+        
+            
+        
+        
+            <p>在公司实习了有一个月了，期间给公司的打卡系统增改了一些功能，功能都不难，没遇到什么技术难题就完成了，不过经过leader审批时才发现自己写的代码还是有很多问题的，也给了我一些指点。<br>
+        
+    </section>
+    
+        <a href="/2015/08/06/2015-8-6-%E7%AC%94%E8%AE%B0/" class="more">More +</a>
+    
+</article>
+
+
+    
+    <article>
+    <h4 class="post-title"><i class="iconfont">&#xe609;</i><a href="/2015/07/20/Node-js-Buffer%E6%91%98%E8%A6%81/">Node.js Buffer摘要</a></h4>
+    <h6 class="date"><i class="iconfont">&#xf0069;</i>2015-07-20</h6>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li></ul>
+    <section class="md post-content">
+        
+            
+        
+        
+            <p>纯JavaScript对Unicode友好但是无法很好地处理二进制数据.当我们处理类似TCP流或文件系统时，是需要处理八位流的.Node有几种操作、创建以及消费(consuming)八位流的策略。</p>
+<p>Buffer像一个整数数组，但对应着 V8 堆之外的一个原始内存分配区域.Buffer不能被resize.<br>Buffer类是一个直接处理二进制数据的全局类型，它可以被多种方式构造.<br>
+        
+    </section>
+    
+        <a href="/2015/07/20/Node-js-Buffer%E6%91%98%E8%A6%81/" class="more">More +</a>
+    
+</article>
+
+
+    
+    <article>
+    <h4 class="post-title"><i class="iconfont">&#xe609;</i><a href="/2015/07/13/%E5%B0%91%E8%AF%B4%E9%9A%8F%E4%BE%BF-%E5%A4%9A%E6%80%9D%E8%80%83/">少说随便,多思考</a></h4>
+    <h6 class="date"><i class="iconfont">&#xf0069;</i>2015-07-13</h6>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Else/" rel="tag">Else</a></li></ul>
+    <section class="md post-content">
+        
+            
+        
+        
+            <p>最近刚刚开始实习生活，任务不多，闲暇时间不少，所以给自己找了点事情做，前一阵子经常逛阮一峰老师的博客，得知他出了《如何变得有思想》一书，因为我这人不太爱看书，所以一直也没有看，今天突然想到了，就去网上看了一下电子版的。事实证明我真的不是看书的料，看了第一辑就停下了，但是我要感谢这本书，因为我从它的第一辑中有所收获。<br>
+        
+    </section>
+    
+        <a href="/2015/07/13/%E5%B0%91%E8%AF%B4%E9%9A%8F%E4%BE%BF-%E5%A4%9A%E6%80%9D%E8%80%83/" class="more">More +</a>
+    
+</article>
+
+
+    
+    <article>
+    <h4 class="post-title"><i class="iconfont">&#xe609;</i><a href="/2015/07/10/%E5%B0%86hexo%E6%90%AC%E5%88%B0%E4%BA%91%E7%AB%AF/">将hexo搬到云端</a></h4>
+    <h6 class="date"><i class="iconfont">&#xf0069;</i>2015-07-10</h6>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li></ul>
+    <section class="md post-content">
+        
+            
+        
+        
+            <p>hexo作为静态博客,缺点就是每次在更新博客时都要重新将每个静态页面重新生成一遍,再部署到页面托管的站点上,而且,一旦你不在自己的电脑旁,想要更新一下自己的博客就太困难了(除非你把博客项目放在网盘或是U盘上，但是ssh又要添加一条记录了).现在Coding的<code>WebIDE</code> 可以让你的hexo在云端编写，从此只要有网络，随时随地更新博客，也不用担心博客因为莫名其妙的操作而突然消失了!</p>
+<p>使用方法也很简单，首先创建一个公有项目来存放你的hexo博客，然后进入WebIDE选项,Coding提供的在线集成开发环境，然后就可以通过<code>terminal</code>来搭建自己的云端写作环境，从此在云端写作了~</p>
+
+        
+    </section>
+    
+</article>
+
+
+    
+    <article>
+    <h4 class="post-title"><i class="iconfont">&#xe609;</i><a href="/2015/07/08/Express%E5%9F%BA%E7%A1%80/">Express基础</a></h4>
+    <h6 class="date"><i class="iconfont">&#xf0069;</i>2015-07-08</h6>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Express/" rel="tag">Express</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li></ul>
+    <section class="md post-content">
+        
+            
+        
+        
+            <p>自己从Express官网API做的一些摘要。</p>
+<p>安装express4.X <code>$ npm install -g express-generator</code></p>
+        
+    </section>
+    
+        <a href="/2015/07/08/Express%E5%9F%BA%E7%A1%80/" class="more">More +</a>
+    
+</article>
+
+
+    
+    <article>
+    <h4 class="post-title"><i class="iconfont">&#xe609;</i><a href="/2015/07/07/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%AC%94%E8%AE%B0/">正则表达式笔记</a></h4>
+    <h6 class="date"><i class="iconfont">&#xf0069;</i>2015-07-07</h6>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Js/" rel="tag">Js</a></li></ul>
+    <section class="md post-content">
+        
+            
+        
+        
+            <p>正则表达式的常用语法:</p>
+<pre><code>\:将其下一个字符转义(\\匹配&quot;\&quot;，\n匹配换行)
+^,$:匹配开始，结束位置
+*，+，？：表示&#123;0,n&#125;,&#123;1,n&#125;,&#123;0,1&#125;次匹配前面的字或表达式
+&#123;n&#125;:表示匹配n次前面的字符或表达式
+?:当此字符紧随任何其他限定符（*、+、?、&#123;n&#125;、&#123;n,&#125;、&#123;n,m&#125;）之后时，匹配模式是“非贪心的”(匹配尽量短的字符)
+(pattern):匹配 pattern 并捕获该匹配的子表达式,可以使用$1-$9从匹配集合中检索捕获的匹配
+x|y：x或y
+[xyz],[^xyz]:匹配包含(，未包含)的任意字符
+[a-z]：a-z
+
+\b:匹配边界，例如er\b匹配never的er，不匹配verb的er
+\d:匹配数字0-9
+\w:匹配0-9,a-z,A-Z和下划线
+\s:匹配任何空白符
+</code></pre><p>正则表达式优先级:(从高到低)</p>
+<pre><code>\
+(),[]
+*，+，？，&#123;n,m&#125;
+^,$,\任何元字符，任何字符
+|
+</code></pre>
+        
+    </section>
+    
+        <a href="/2015/07/07/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%AC%94%E8%AE%B0/" class="more">More +</a>
+    
+</article>
+
+
+    
+    <article>
+    <h4 class="post-title"><i class="iconfont">&#xe609;</i><a href="/2015/06/23/%E9%80%9A%E8%BF%87%E5%A4%8D%E5%88%B6%E7%B2%98%E8%B4%B4%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87/">通过复制粘贴上传图片</a></h4>
+    <h6 class="date"><i class="iconfont">&#xf0069;</i>2015-06-23</h6>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Js/" rel="tag">Js</a></li></ul>
+    <section class="md post-content">
+        
+            
+        
+        
+            <p>通过复制粘贴来进行图片的上传<br>
+        
+    </section>
+    
+        <a href="/2015/06/23/%E9%80%9A%E8%BF%87%E5%A4%8D%E5%88%B6%E7%B2%98%E8%B4%B4%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87/" class="more">More +</a>
+    
+</article>
+
+
+    
+    <article>
+    <h4 class="post-title"><i class="iconfont">&#xe609;</i><a href="/2015/06/17/hexo-3-0-deployer-not-found-github/">hexo 3.0 deployer not found:github</a></h4>
+    <h6 class="date"><i class="iconfont">&#xf0069;</i>2015-06-17</h6>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li></ul>
+    <section class="md post-content">
+        
+            
+        
+        
+            <p>hexo升级到3.0了，刚升级完，发现deploy出错:<code>error deployer not found:github</code>，原因是更新到3.0之后，config.yml里deploy的type需要改为<code>git(原本是github)</code>,另外要先安装一下<code>hexo-deployer-git</code>.</p>
+<p><code>npm install hexo-deployer-git --save</code></p>
+
+        
+    </section>
+    
+</article>
+
+
+    
+    <article>
+    <h4 class="post-title"><i class="iconfont">&#xe609;</i><a href="/2015/05/20/transform-trasition-animation/">transform,trasition,animation</a></h4>
+    <h6 class="date"><i class="iconfont">&#xf0069;</i>2015-05-20</h6>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Css/" rel="tag">Css</a></li></ul>
+    <section class="md post-content">
+        
+            
+        
+        
+            <p><strong>transform(转换)</strong>: 用于对元素的2D或3D转换，常用的有转换(translate),缩放(scale),旋转(rotate)和倾斜(skew).</p>
+        
+    </section>
+    
+        <a href="/2015/05/20/transform-trasition-animation/" class="more">More +</a>
+    
+</article>
+
+
+<div class="pagination">
+	<a class="extend prev" rel="prev" href="/page/2/">Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">Next</a>
+</div>
+    </div>
+    <button class="feedback-btn" data-feedbackok-trigger>Hello~ 🥰</button>
+    <footer>
+    <div class="info"><span>Powered By <a href="https://hexo.io/" target="blank">Hexo</a></span>&nbsp;&nbsp;&nbsp;&nbsp;<span>Theme by <a href="https://github.com/showonne/hexo_showonne" target="blank">Showonne</a></span></div>
+</footer>
+    <script
+        src="https://cdn.feedbackok.com/widget.js"
+        data-pid="0m524p3"
+        async
+        defer
+    ></script>
+    
+<script src="/js/index.js"></script>
+
+</body>
+</html>

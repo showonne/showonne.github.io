@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <title>showonne</title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/tomorrow-night.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+    <header>
+    <span class="banner"><a href="/">showonne</a></span>
+    <span class="menu">Menu</span>
+    <ul class="menu_list hide">
+        
+            <li><a href="/" >Home</a></li>
+        
+            <li><a href="/archives" >Archives</a></li>
+        
+            <li><a href="/tags" >Tags</a></li>
+        
+            <li><a href="/links" >Links</a></li>
+        
+            <li><a href="/about" >About</a></li>
+        
+    </ul>
+</header>
+    <div class="main">
+        
+    <article>
+    <h1 class='post-title'>
+        <span>Node.js Buffer摘要</span>
+    </h1>
+    <section class='post-content'>
+        
+            
+        
+        <p>纯JavaScript对Unicode友好但是无法很好地处理二进制数据.当我们处理类似TCP流或文件系统时，是需要处理八位流的.Node有几种操作、创建以及消费(consuming)八位流的策略。</p>
+<p>Buffer像一个整数数组，但对应着 V8 堆之外的一个原始内存分配区域.Buffer不能被resize.<br>Buffer类是一个直接处理二进制数据的全局类型，它可以被多种方式构造.<br><span id="more"></span></p>
+<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><p><strong>new Buffer(size)</strong><br>分配一个新的 buffer 大小是size的8位字节.<br><strong>new Buffer(array)</strong><br>分配一个新的 buffer 使用一个8位字节array数组.<br><strong>new buffer(str [,encoding])</strong><br>分配一个buffer，包含着指定的str，默认编码utf8</p>
+<h2 id="类方法"><a href="#类方法" class="headerlink" title="类方法"></a>类方法</h2><p><strong>Buffer.byteLength(str, [encoding])</strong><br>将会返回这个字符串<code>真实byte长度</code>,<code>encoding</code>默认<code>utf8</code></p>
+<pre><code>console.log(Buffer.byteLength(&quot;呵呵&quot;)); //返回值为6,常用中文字符用utf-8编码占用3个字节
+</code></pre><p><strong>Buffer.concat(list, [totalLength]) </strong><br>返回一个保存着将传入buffer数组中所有buffer对象拼接在一起的buffer对象.list为用于被拼接的buffer数组.totalLength:上述Buffer数组的所有Buffer的总大小。</p>
+<pre><code>var buf1 = new Buffer([1,2,3]); 
+console.log(buf1);  //&lt;Buffer 01 02 03&gt;
+var buf2 = new Buffer([4,5,6]);
+console.log(buf2);  //&lt;Buffer 04 05 06&gt;
+buf2 = Buffer.concat([buf1,buf2]);
+console.log(buf2);  //&lt;Buffer 01 02 03 04 05 06&gt;
+</code></pre><h2 id="实例属性"><a href="#实例属性" class="headerlink" title="实例属性"></a>实例属性</h2><p><strong>buf[index]</strong><br><strong>buf.length</strong> 返回这个buffer的bytes大小.这未必是这buffer里面内容的大小，而是依据是buffer对象所分配的内存数值，它不会随着这个buffer对象内容的改变而改变。</p>
+<pre><code>var buf1 = new Buffer(20);
+console.log(buf1.length);  //20
+</code></pre><h2 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h2><p><strong>buf.write(str, [offset], [length], [encoding])</strong><br>按照指定参数将str写入buffer，str为指要写入的字符串，offset偏移量，默认0，length写入长度，默认<code>buffer.length-offset</code>，encoding默认utf8.返回值为number类型，表示多少8位字节流被写入了，这个方法不会出现写入部分字符。</p>
+<pre><code>var buf = new Buffer(10);
+var len = buf.write(&quot;今天天不错&quot;);
+console.log(len + &quot;bytes:&quot; + buf.toString());//9 bytes:今天天
+</code></pre><p><strong>buf.toString([encoding], [start], [end])</strong>将Buffer转换为字符串，默认值分别为<code>utf8</code>,<code>0</code>,<code>buffer.length</code></p>
+<p><strong>buf.toJSON()</strong> 返回一个JSON表示的Buffer实例。<code>JSON.stringify</code>将会默认调用来字符串序列化这个Buffer实例。</p>
+<p><strong>buf.slice([start], [end])</strong> 返回一个新的buffer，这个buffer将会和老的buffer引用相同的内存地址，只是根据start(默认是0) 和end(默认buffer.length) 偏移和裁剪了索引.</p>
+<pre><code>var buf1 = new Buffer(&quot;123&quot;);
+console.log(buf1); // &lt;Buffer 31 32 33&gt;
+var buf2 = buf1.slice(1,2);
+console.log(buf2); // &lt;Buffer 32&gt;
+buf2[0] = 0x33;
+console.log(buf1); // &lt;Buffer 31 33 33&gt;
+</code></pre><p><strong>buf.fill(value, [offset], [end])</strong> 使用指定的value来填充这个buffer。</p>
+<pre><code>var b = new Buffer(50);b.fill(&quot;h&quot;);
+</code></pre>
+    </section>
+    
+        <section id="comments">
+        
+        </section>
+    
+</article>
+
+    </div>
+    <button class="feedback-btn" data-feedbackok-trigger>Hello~ 🥰</button>
+    <footer>
+    <div class="info"><span>Powered By <a href="https://hexo.io/" target="blank">Hexo</a></span>&nbsp;&nbsp;&nbsp;&nbsp;<span>Theme by <a href="https://github.com/showonne/hexo_showonne" target="blank">Showonne</a></span></div>
+</footer>
+    <script
+        src="https://cdn.feedbackok.com/widget.js"
+        data-pid="0m524p3"
+        async
+        defer
+    ></script>
+    
+<script src="/js/index.js"></script>
+
+</body>
+</html>

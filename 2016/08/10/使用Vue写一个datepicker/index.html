@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <title>showonne</title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/tomorrow-night.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+    <header>
+    <span class="banner"><a href="/">showonne</a></span>
+    <span class="menu">Menu</span>
+    <ul class="menu_list hide">
+        
+            <li><a href="/" >Home</a></li>
+        
+            <li><a href="/archives" >Archives</a></li>
+        
+            <li><a href="/tags" >Tags</a></li>
+        
+            <li><a href="/links" >Links</a></li>
+        
+            <li><a href="/about" >About</a></li>
+        
+    </ul>
+</header>
+    <div class="main">
+        
+    <article>
+    <h1 class='post-title'>
+        <span>使用Vue写一个datepicker</span>
+    </h1>
+    <section class='post-content'>
+        
+            
+        
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>写插件是很有意思，也很锻炼人，因为这个过程中能发现许多的细节问题。在前端发展的过程中，jQuery无疑是一个重要的里程碑，围绕着这个优秀项目也出现了很多优秀的插件可以直接使用，大大节省了开发者们的时间。jQuery最重要的作用是跨浏览器，而现在浏览器市场虽不完美，但已远没有从前那么惨，数据驱动视图的思想倍受欢迎，大家开始使用前端框架取代jQuery，我个人比较喜欢Vue.js，所以想试着用Vue.js写一个组件出来。</p>
+<p>为了发布到npm上，所以给项目地址改名字了，但是内部代码没有改，使用方法比之前方便。<br>Demo演示: <a target="_blank" rel="noopener" href="http://www.showonne.com/vue-date/dist/browser/">Here</a><br>GitHub地址: <a target="_blank" rel="noopener" href="https://github.com/showonne/vue-date">Here</a><br><del><b>希望大家能给个star</b></del><br><span id="more"></span></p>
+<h2 id="功能-amp-期望"><a href="#功能-amp-期望" class="headerlink" title="功能&amp;期望"></a>功能&amp;期望</h2><p>这个datepicker目前仅实现了一些常用的功能：</p>
+<ul>
+<li>选择时间(<del>这话说得有点多余<del>)</li>
+<li>最大/最小时间限制</li>
+<li>中/英文切换(其实也就星期和月份需要切换)</li>
+<li>可以以<code>.vue</code>形式使用，也可在浏览器环境中直接使用</li>
+<li>没了。。。</li>
+</ul>
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><p>万事的第一步依然是创建项目，只是单一组件，结构并不复杂，Datepicker.vue是最重要的组件文件，dist是webpack的输出文件夹，index.js是webpack打包的入口文件，最后是webpack的配置文件，用来对我们的库文件进行打包用的。因此项目结构就是这样：</p>
+<pre><code>.
+├── LICENSE
+├── README.md
+├── index.js
+├── package.json
+├── src
+│   └── Datepicker.vue
+└── webpack.config.js
+</code></pre><h2 id="从Datepicker-vue入手"><a href="#从Datepicker-vue入手" class="headerlink" title="从Datepicker.vue入手"></a>从Datepicker.vue入手</h2><p>以<code>.vue</code>的方式写Vue组件是一种特殊写法，每个Vue文件包括<code>template</code>, <code>script</code>, <code>style</code>三部分，<code>template</code>最好不要成为片段实例,所以最外层先套一层<code>div</code>，当做整个组件的根元素。一个datepicker一般由两部分组成，一个用来显示日期的input框，一个用来选择日期的panel，因为我发现input在移动端会自动唤起键盘，所以没有使用input，直接用了div模拟,通过点击事件决定panel的显隐。<code>value</code>是最终的结果，需要和父组件通信，所以将value写成了prop，在父组件中使用<code>value.sync=&quot;xxx&quot;</code>，datepicker的value就和父组件的<code>xxx</code>双向绑定了。</p>
+<pre><code>&lt;template&gt;
+    &lt;div class=&quot;date-picker&quot;&gt;
+        &lt;div class=&quot;input&quot; v-text=&quot;value&quot; @click=&quot;panelState = !panelState&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;date-panel&quot; v-show=&quot;panelState&quot;&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;scrip&gt;
+    export default &#123;
+        data () &#123;
+            return &#123;
+                panelState: false //初始值，默认panel关闭
+            &#125;
+        &#125;,
+        props: &#123;
+            value: String
+        &#125;
+    &#125;
+&lt;/script&gt;
+</code></pre><h2 id="渲染日期列表"><a href="#渲染日期列表" class="headerlink" title="渲染日期列表"></a>渲染日期列表</h2><p>一个月最少是28天，如果把周日排在开头，那么最少(1号恰好是周日)需要4行，但是每个月天数30，31居多，而且1号又不一定是周日，我索性干脆按最多的情况设计了，共6行，当月日期没填满的地方用上个月或下个月的日期补齐，这样就方便计算了，而且切换月份时候panel高度不会变化。日期列表的数组需要动态计算，Vue提供了<a target="_blank" rel="noopener" href="http://vuejs.org.cn/api/#computed">computed</a>这个属性，所以直接将日期列表<code>dateList</code>写成计算属性。我的方法是将日期列表固定为长度为42的数组，然后将本月，上个月，下个月的日期依次填充。</p>
+<pre><code>computed: &#123;
+    dateList () &#123;
+        //获取当月的天数
+        let currentMonthLength = new Date(this.tmpMonth, this.tmpMonth + 1, 0).getDate()
+        //先将当月的日期塞入dateList
+        let dateList = Array.from(&#123;length: currentMonthLength&#125;, (val, index) =&gt; &#123;
+            return &#123;
+                currentMonth: true,
+                value: index + 1
+            &#125;
+        &#125;)
+        //获取当月1号的星期是为了确定在1号前需要插多少天
+        let startDay = new Date(this.year, this.tmpMonth, 1).getDay()
+        //确认上个月一共多少天
+        let previousMongthLength = new Date(this.year, this.tmpMonth, 0).getDate()
+    &#125;
+    //在1号前插入上个月日期
+    for(let i = 0, len = startDay; i &lt; len; i++)&#123;
+        dateList = [&#123;previousMonth: true, value: previousMongthLength - i&#125;].concat(dateList)
+    &#125;
+    //补全剩余位置
+    for(let i = 0, item = 1; i &lt; 42; i++, item++)&#123;
+        dateList[dateList.length] = &#123;nextMonth: true, value: i&#125;
+    &#125;
+    return dateList
+&#125;
+</code></pre><p>这里用<code>Array.from</code>来初始化了一个数组，传入一个Array Like，转化成数组，在拼接字符串时候采用了<code>arr[arr.length]</code>和<code>[&#123;&#125;].concat(arr)</code>这种方式，因为在JsTips上学到这样做性能更好，文章的最后会贴出相关链接。<br>这样，日期列表就构建好了，在template中使用<code>v-for</code>循环渲染出来</p>
+<pre><code>&lt;ul class=&quot;date-list&quot;&gt;
+    &lt;li v-for=&quot;item in dateList&quot;
+        v-text=&quot;item.value&quot; 
+        :class=&quot;&#123;preMonth: item.previousMonth, nextMonth: item.nextMonth,
+            selected: date === item.value &amp;&amp; month === tmpMonth &amp;&amp; item.currentMonth, invalid: validateDate(item)&#125;&quot;
+        @click=&quot;selectDate(item)&quot;&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+</code></pre><p>样式上就可以自己发挥了，怎么喜欢怎么写。需要注意的是循环日期可能会出现上个月或这个月的日期，我通过<code>previuosMonth</code>,<code>currentMonth</code>和<code>nextMonth</code>分别做了标记，对其他功能提供判断条件。<br>年份和月份的列表都是差不多的道理，年份列表的初始值我直接写在了<code>data</code>里，以当前年份为第一个，为了和月份保持一致，每次显示12个，都通过<code>v-for</code>渲染。</p>
+<pre><code>data () &#123;
+    return &#123;
+        yearList: Array.from(&#123;length: 12&#125;, (value, index) =&gt; new Date().getFullYear() + index)
+    &#125;
+&#125;
+</code></pre><h2 id="选择日期功能"><a href="#选择日期功能" class="headerlink" title="选择日期功能"></a>选择日期功能</h2><p>选择顺序是：年 -&gt; 月 -&gt; 日，所以我们可以通过一个状态变量来控制panel中显示的内容，绑定适合的函数切换显示状态。</p>
+<pre><code>&lt;div&gt;
+    &lt;div class=&quot;type-year&quot; v-show=&quot;panelType === &apos;year&apos;&quot;&gt;
+        &lt;ul class=&quot;year-list&quot;&gt;
+          &lt;li v-for=&quot;item in yearList&quot;
+              v-text=&quot;item&quot;
+              :class=&quot;&#123;selected: item === tmpYear, invalid: validateYear(item)&#125;&quot; 
+              @click=&quot;selectYear(item)&quot;
+          &gt;
+          &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;type-month&quot; v-show=&quot;panelType === &apos;month&apos;&quot;&gt;
+        &lt;ul class=&quot;month-list&quot;&gt;
+          &lt;li v-for=&quot;item in monthList&quot;
+              v-text=&quot;item | month language&quot;
+              :class=&quot;&#123;selected: $index === tmpMonth &amp;&amp; year === tmpYear, invalid: validateMonth($index)&#125;&quot; 
+              @click=&quot;selectMonth($index)&quot;
+          &gt;
+          &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;type-date&quot; v-show=&quot;panelType === &apos;date&apos;&quot;&gt;
+        &lt;ul class=&quot;date-list&quot;&gt;
+          &lt;li v-for=&quot;item in dateList&quot;
+              v-text=&quot;item.value&quot; 
+              track-by=&quot;$index&quot; 
+              :class=&quot;&#123;preMonth: item.previousMonth, nextMonth: item.nextMonth,
+                  selected: date === item.value &amp;&amp; month === tmpMonth &amp;&amp; item.currentMonth, invalid: validateDate(item)&#125;&quot;
+              @click=&quot;selectDate(item)&quot;&gt;
+          &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre><p>选择日期的方法就不细说了，在<code>selectYear</code>,<code>selectMonth</code>中对年份，月份变量赋值，再分别将<code>panelType</code>推向下一步就实现了日期选择功能。<br>不过在未选择完日期之前，你可能不希望当前年月的真实值发生变化，所以在这些方法中可先将选择的值赋给一个临时变量，等到<code>seletDate</code>的时候再一次性全部赋值。</p>
+<pre><code>selectMonth (month) &#123;
+    if(this.validateMonth(month))&#123;
+        return
+    &#125;else&#123;
+        //临时变量
+        this.tmpMonth = month
+        //切换panel状态
+        this.panelType = &apos;date&apos;
+    &#125;
+&#125;,
+selectDate (date) &#123;
+    //validate logic above...
+    //一次性全部赋值
+    this.year = tmpYear
+    this.month = tmpMonth
+    this.date = date.value
+    this.value = `$&#123;this.tmpYear&#125;-$&#123;(&apos;0&apos; + (this.month + 1)).slice(-2)&#125;-$&#123;(&apos;0&apos; + this.date).slice(-2)&#125;`
+    //选择完日期后，panel自动隐藏
+    this.panelState = false
+&#125;
+</code></pre><h2 id="最大-小时间限制"><a href="#最大-小时间限制" class="headerlink" title="最大/小时间限制"></a>最大/小时间限制</h2><p>最大/小值是需要从父组件传递下来的，因此应该使用<code>props</code>，另外，这个值可以是字符串，也应该可以是变量(比如同时存在两个datepicker，第二个的日期不能比第一个大这种逻辑)，所以应该使用<a target="_blank" rel="noopener" href="http://vuejs.org.cn/api/#v-bind">Dynamically bind</a>的方式传值。</p>
+<pre><code>&lt;datepicker :value.sync=&quot;start&quot;&gt;&lt;/datepicker&gt;
+&lt;!-- 现在min的值会随着start的变化而变化 --&gt;
+&lt;datepicker :value.sync=&quot;end&quot; :min=&quot;start&quot; &gt;&lt;/datepicker&gt;
+</code></pre><p>增加了限制条件，对于不合法的日期，其按钮应该变为置灰状态，我用了比较时间戳的方式来判断日期是否合法，因为就算当前panel中的日期是跨年或是跨月的，通过日期构造函数创建时都会帮你转换成对应的合法值，省去很多判断的麻烦：</p>
+<pre><code>new Date(2015, 0, 0).getTime() === new Date(2014, 11, 31).getTime() //true
+new Date(2015, 12, 0).getTime() === new Date(2016, 0, 0).getTime() //true
+</code></pre><p>因此验证日期是否合法的函数是这样的:</p>
+<pre><code>validateDate (date) &#123;
+  let mon = this.tmpMonth
+  if(date.previousMonth)&#123;
+      mon -= 1
+  &#125;else if(date.nextMonth)&#123;
+      mon += 1
+  &#125;
+  if(new Date(this.tmpYear, mon, date.value).getTime() &gt;= new Date(this.minYear, this.minMonth - 1, this.minDate).getTime()
+      &amp;&amp; new Date(this.tmpYear, mon, date.value).getTime() &lt;= new Date(this.maxYear, this.maxMonth - 1, this.maxDate).getTime())&#123;
+      return false
+  &#125;
+  return true
+</code></pre><p>  }</p>
+<h2 id="动态计算位置"><a href="#动态计算位置" class="headerlink" title="动态计算位置"></a>动态计算位置</h2><p>当页面右侧有足够的空间显示时，datepicker的panel会定位为相对于父元素<code>left: 0</code>的位置，如果没有足够的空间，则应该置于<code>right: 0</code>的位置，这一点可以通过Vue提供的动态样式和样式对象来实现(动态class和动态style其实只是动态props的特例)，而计算位置的时刻，我放在了组件声明周期的<code>ready</code>周期中，因为这时组件已经插入到DOM树中，可以获取style进行动态计算：</p>
+<pre><code>ready () &#123;
+    if(this.$el.parentNode.offsetWidth + this.$el.parentNode.offsetLeft - this.$el.offsetLeft &lt;= 300)&#123;
+        this.coordinates = &#123;right: &apos;0&apos;, top: `$&#123;window.getComputedStyle(this.$el.children[0]).offsetHeight + 4&#125;px`&#125;
+    &#125;else&#123;
+        this.coordinates = &#123;left: &apos;0&apos;, top: `$&#123;window.getComputedStyle(this.$el.children[0]).offsetHeight + 4&#125;px`&#125;
+    &#125;
+&#125;
+&lt;!-- template中对应的动态style --&gt;
+&lt;div :style=&quot;coordinates&quot;&gt;&lt;/div&gt;
+</code></pre><p>为了panel的显隐可以平滑过渡，可以使用<code>transition</code>做过渡动画，这里我简单地通过一个0.2秒的透明度过渡让显隐更平滑。</p>
+<pre><code>&lt;div :style=&quot;this.coordinates&quot; v-show=&quot;panelState&quot; transition=&quot;toggle&quot;&gt;&lt;/div&gt;
+
+//less syntax
+.toggle&#123;
+    &amp;-transition&#123;
+        transition: all ease .2s;
+    &#125;
+    &amp;-enter, &amp;-leave&#123;
+        opacity: 0;
+    &#125;
+&#125;
+</code></pre><h2 id="中英文切换"><a href="#中英文切换" class="headerlink" title="中英文切换"></a>中英文切换</h2><p>这里其实也很简单，这种多语言切换实质就是一个key根据不同的type而输出不同的value，所以使用filter可以很容易的实现它！比如渲染星期的列表:</p>
+<pre><code>&lt;ul class=&quot;weeks&quot;&gt;
+     &lt;li v-for=&quot;item in weekList&quot; v-text=&quot;item | week language&quot;&gt;&lt;/li&gt;
+ &lt;/ul&gt;
+
+filters : &#123;
+    week (item, lang)&#123;
+        switch (lang) &#123;
+          case &apos;en&apos;:
+              return &#123;0: &apos;Su&apos;, 1: &apos;Mo&apos;, 2: &apos;Tu&apos;, 3: &apos;We&apos;, 4: &apos;Th&apos;, 5: &apos;Fr&apos;, 6: &apos;Sa&apos;&#125;[item]
+          case &apos;ch&apos;:
+              return &#123;0: &apos;日&apos;, 1: &apos;一&apos;, 2: &apos;二&apos;, 3: &apos;三&apos;, 4: &apos;四&apos;, 5: &apos;五&apos;, 6: &apos;六&apos;&#125;[item]
+          default:
+              return item
+      &#125;
+    &#125;
+&#125;
+</code></pre><h2 id="多种使用方式"><a href="#多种使用方式" class="headerlink" title="多种使用方式"></a>多种使用方式</h2><p>对于一个Vue组件，如果是使用<code>webpack + vue-loader</code>的<code>.vue</code>单文件写法，我希望这样使用：</p>
+<pre><code>//App.vue
+&lt;script&gt;
+    import datepicker from &apos;path/to/datepicker.vue&apos;
+    export default &#123;
+        components: &#123; datepicker&#125;
+    &#125;
+&lt;/script&gt;
+</code></pre><p>如果是直接在浏览器中使用，那么我希望<code>datepicker</code>这个组件是暴露在全局下的，可以这么使用：</p>
+<pre><code>//index.html
+&lt;html&gt;
+    &lt;script src=&quot;path/to/vue.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;path/to/datepicker.js&quot;&gt;&lt;/script&gt;
+    &lt;body&gt;
+        &lt;div id=&quot;app&quot;&gt;&lt;/div&gt;
+        &lt;script&gt;
+            new Vue(&#123;
+                el: &apos;#app&apos;,
+                components: &#123; datepicker &#125;
+            &#125;)
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>这里我选择了webpack作为打包工具，使用webpack的<code>output.library</code>和<code>output.linraryTarget</code>这两个属性就可以把你的bundle文件作为库文件打包。<code>library</code>定义了库的名字，<code>libraryTarget</code>定义了你想要打包的格式，具体可以看文档。我希望自己的库可以通过<code>datepicker</code>加载到，并且打包成<code>umd</code>格式，因此我的<code>webpack.config.js</code>是这样的:</p>
+<pre><code>module.exports = &#123;
+    entry: &apos;./src/Datepicker.vue&apos;,
+    output: &#123;
+        path: path.resolve(__dirname, &apos;./&apos;),
+        library: &apos;datepicker&apos;,
+        filename: &apos;index.js&apos;,
+        libraryTarget: &apos;umd&apos;
+    &#125;,
+    module: &#123;
+        loaders: [
+            &#123;test: /\.vue$/, loaders: [&apos;vue&apos;]&#125;,
+            &#123;test: /\.js$/, exclude: /node_modules/, loaders: [&apos;babel&apos;]&#125;
+        ]
+    &#125;
+&#125;
+</code></pre><p>打包完成的模块就是一个<code>umd</code>格式的模块啦，可以在浏览器中直接使用，也可以配合require.js等模块加载器使用！</p>
+<h2 id="适配-Vue-2-x"><a href="#适配-Vue-2-x" class="headerlink" title="适配 Vue 2.x"></a>适配 Vue 2.x</h2><p>Vue 2.0已经发布有段时间了，现在把之前的组件适配到Vue 2.0。迁移过程还是很顺利的，核心API改动不大，可以借助<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue-migration-helper">vue-migration-helper</a>来找出废弃的API再逐步修改。这里只列举一些我需要修改的API。</p>
+<h2 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h2><p>2.0中的filter只能在mustache绑定中使用，如果想在指令式绑定中绑定过滤后的值，可以选择计算属性。我在月份和星期的显示中使用到了过滤器来过滤语言类型，但我之前是在指令式绑定中使用的filter，所以需要如下修改，：</p>
+<pre><code>//修改前
+&lt;div class=&quot;month-box&quot; @click=&quot;chType(&apos;month&apos;)&quot; v-text=&quot;tmpMonth + 1 | month language&quot;&gt;&lt;/div&gt;
+//修改后，filter传参的方式也变了，变成了函数调用的风格
+&lt;div class=&quot;month-box&quot; @click=&quot;chType(&apos;month&apos;)&quot;&gt;{{tmpMonth + 1 | month(language)}}&lt;/div&gt;
+</code></pre><h2 id="移除-index和-key"><a href="#移除-index和-key" class="headerlink" title="移除$index和$key"></a>移除<code>$index</code>和<code>$key</code></h2><p>这两个属性不会在<code>v-for</code>中被自动创建了，如需使用，要在<code>v-for</code>中自行声明：</p>
+<pre><code>&lt;li v-for=&quot;item in monthList&quot; @click=&quot;selectMonth($index)&quot;&gt;&lt;/li&gt;
+//
+&lt;li v-for=&quot;(item, index) in monthList&quot; @click=&quot;selectMonth(index)&quot;&gt;&lt;/li&gt;
+</code></pre><h2 id="ready生命周期移除"><a href="#ready生命周期移除" class="headerlink" title="ready生命周期移除"></a><code>ready</code>生命周期移除</h2><p><code>ready</code>从生命周期钩子中移除了，迁移方法很简单，使用<code>mounted</code>和<code>this.$nextTick</code>来替换。</p>
+<h2 id="prop-sync弃用"><a href="#prop-sync弃用" class="headerlink" title="prop.sync弃用"></a><code>prop.sync</code>弃用</h2><p><code>prop</code>的<code>sync</code>弃用了，迁移方案是使用自定义事件，而且Datepicker这种input类型组件，可以使用<a target="_blank" rel="noopener" href="http://vuejs.org/guide/components.html#Form-Input-Components-using-Custom-Events">表单输入组件的自定义事件</a>作为替换方案。自定义组件也可以使用<code>v-model</code>指令了，但是必须满足两个条件：</p>
+<ol>
+<li>接收一个<code>value</code>的<code>prop</code></li>
+<li>值发生变化时，触发一个<code>input</code>事件，传入新值。</li>
+</ol>
+<p>所以Datepicker的使用方式也不是<code>&lt;datepicker value.sync=&quot;now&quot;&gt;&lt;/datepicker&gt;</code>了，而是<code>&lt;datepicker v-model=&quot;now&quot;&gt;&lt;/datepicker&gt;</code>。组件自身向父级传值的方式也不一样了：</p>
+<pre><code>//1.x版本，设置了value的值会同步到父级
+this.value = `$&#123;this.tmpYear&#125;-$&#123;(&apos;0&apos; + (this.month + 1)).slice(-2)&#125;-$&#123;(&apos;0&apos; + this.date).slice(-2)&#125;`
+
+//2.x版本，需要自己触发input事件，将新值作为参数传递回去
+let value = `$&#123;this.tmpYear&#125;-$&#123;(&apos;0&apos; + (this.month + 1)).slice(-2)&#125;-$&#123;(&apos;0&apos; + this.date).slice(-2)&#125;`
+this.$emit(&apos;input&apos;, value)
+</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上就是我在写这个datepicker时的大致思路，本身也是很简单的事情，没有处处展开来说，写在这里作为自己的一个总结，如果有刚开始使用Vue的同学也希望这篇文章可以在思路上帮助到你们:P，对于各位老鸟如果有什么指点的地方我也很感谢:D，那么差不多就这样，后面贴一些相关推荐阅读。</p>
+<h4 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h4><p><a target="_blank" rel="noopener" href="http://www.jstips.co/zh_cn/insert-item-inside-an-array/">高效地向数组中插值</a><br><a target="_blank" rel="noopener" href="http://vuejs.org.cn/guide/components.html#片断实例">Vue.js-片段实例</a><br><a target="_blank" rel="noopener" href="http://vuejs.org.cn/api/#v-bind">Vue.js-动态绑定</a><br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Date">Js日期对象基础</a><br><a target="_blank" rel="noopener" href="http://webpack.github.io/docs/configuration.html#output-library">Webpack: export bundle as library</a><br><a target="_blank" rel="noopener" href="https://github.com/umdjs/umd">UMD(universial Module Defination)</a></p>
+
+    </section>
+    
+        <section id="comments">
+        
+        </section>
+    
+</article>
+
+    </div>
+    <button class="feedback-btn" data-feedbackok-trigger>Hello~ 🥰</button>
+    <footer>
+    <div class="info"><span>Powered By <a href="https://hexo.io/" target="blank">Hexo</a></span>&nbsp;&nbsp;&nbsp;&nbsp;<span>Theme by <a href="https://github.com/showonne/hexo_showonne" target="blank">Showonne</a></span></div>
+</footer>
+    <script
+        src="https://cdn.feedbackok.com/widget.js"
+        data-pid="0m524p3"
+        async
+        defer
+    ></script>
+    
+<script src="/js/index.js"></script>
+
+</body>
+</html>

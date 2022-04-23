@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <title>showonne</title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/tomorrow-night.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+    <header>
+    <span class="banner"><a href="/">showonne</a></span>
+    <span class="menu">Menu</span>
+    <ul class="menu_list hide">
+        
+            <li><a href="/" >Home</a></li>
+        
+            <li><a href="/archives" >Archives</a></li>
+        
+            <li><a href="/tags" >Tags</a></li>
+        
+            <li><a href="/links" >Links</a></li>
+        
+            <li><a href="/about" >About</a></li>
+        
+    </ul>
+</header>
+    <div class="main">
+        
+    <article>
+    <h1 class='post-title'>
+        <span>使用nginx代理解决跨域问题</span>
+    </h1>
+    <section class='post-content'>
+        
+            
+        
+        <p>使用nginx代理解决跨域，方便快捷，只需几项配置，告别跨域烦恼~</p>
+<span id="more"></span>
+<p>前端开发中跨域是最常见的问题之一，在开发过程中有一个情况: 我的项目代码在本地，API则在其他的域名下，这样在开发中测试功能就会受到跨域限制，想要修改本地代码，获取远程API接口数据测试，因此需要把API请求代理到remote端，项目代码本身则不需要代理。从前没尝试过这方面的研究，本来是把本地请求都代理到远程，发现访问的项目代码也变成远程的了，修改的功能得不到体现。于是需要一个更灵活的代理服务器来完成，nginx就可以做到。</p>
+<p>Mac下安装nginx很简单，通过homebrew安装即可:</p>
+<pre><code>brew install nginx
+</code></pre><p>如果顺利的话，一条命令直接ok，不过也有不顺利的时候，比如在我今天安装时，install ok后，提示我<code>/some/path is not writable</code>,没有写权限，解决办法：<code>sudo chmod -R $(whoami) /some/path</code>,nginx安装完成，使用<code>sudo nginx</code>即可开启nginx服务。</p>
+<p>接下来要对nginx进行配置，配置文件在<code>/usr/local/etc/nginx/nginx.conf</code>下，然后我们进行一点小修改~</p>
+<pre><code>sudo vim /usr/local/etc/nginx/nginx.conf
+</code></pre><p>我们主要修改<code>server</code>相关的配置，该字段包含虚拟主机的配置。</p>
+<pre><code>server &#123;
+
+    listen 80;
+    server localhost;
+    index index.html;
+
+    root /path/to/your/project;
+
+    location ^~/api/ &#123;
+        proxy_pass http://api.com;
+    &#125;
+
+&#125;
+</code></pre><p><code>listen</code>和<code>server_name</code>分别指定了访问的域名和端口，比如如上配置会匹配<code>localhost</code>(默认80端口)，<code>root</code>指定了网站根目录的位置,<code>index</code>指定了首页文件名，可以写多个(html, htm, php…)，用空格隔开。</p>
+<p>然后就是<code>location</code>，可以用来匹配你在该<code>server_name:port</code>下的访问路径，比如上面的<code>root</code>，还可以这么写：</p>
+<pre><code>location / &#123;
+    root /path/to/your/project;
+    ...
+&#125;
+</code></pre><p>然后使用<code>proxy_pass</code>将API代理到你的API服务器上，就可以解决跨域问题了。</p>
+<h2 id="遇到的一个坑："><a href="#遇到的一个坑：" class="headerlink" title="遇到的一个坑："></a>遇到的一个坑：</h2><p>安装好nginx配置好后，访问localhost显示<code>403 forbidden</code>，在sof上找到了回答：当你的代理配置好后，如果index不存在，也会返回<code>403 forbidden</code>,不过我不是这个问题，而是另外一种：当用户需要获取(access)一个文件时，需要他的每一个父文件夹有x权限(可执行权限)才能获取到，这是一个很容易被忽略的问题。只要<code>chmod o+x /home</code>(任何拒绝访问的文件夹)即可。<a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/6795350/nginx-403-forbidden-for-all-files">详情</a>这个问题看了好久，不过当时也是脑子犯浑了，看到forbidden就应该往权限上想的。。。</p>
+<p>另外关于nginx的一些命令：</p>
+<pre><code>//需要sudo下运行
+nginx //启动nginx服务
+nginx -s stop //退出
+nginx -s quit //退出
+nginx -s reload //重新加载配置文件重启
+</code></pre><p>另外在写nginx配置文件的时候，一定要注意加<code>;</code>！！！而且在不断地改conf的过程中，还学会了一招：在vim中<code>:+&lt;number&gt;</code>可以直接跳<code>number</code>行。</p>
+<p>目前涉及到的nginx用法就这么多，以后用到再进行补充。</p>
+<p>End.</p>
+
+    </section>
+    
+        <section id="comments">
+        
+        </section>
+    
+</article>
+
+    </div>
+    <button class="feedback-btn" data-feedbackok-trigger>Hello~ 🥰</button>
+    <footer>
+    <div class="info"><span>Powered By <a href="https://hexo.io/" target="blank">Hexo</a></span>&nbsp;&nbsp;&nbsp;&nbsp;<span>Theme by <a href="https://github.com/showonne/hexo_showonne" target="blank">Showonne</a></span></div>
+</footer>
+    <script
+        src="https://cdn.feedbackok.com/widget.js"
+        data-pid="0m524p3"
+        async
+        defer
+    ></script>
+    
+<script src="/js/index.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <title>showonne</title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/tomorrow-night.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+    <header>
+    <span class="banner"><a href="/">showonne</a></span>
+    <span class="menu">Menu</span>
+    <ul class="menu_list hide">
+        
+            <li><a href="/" >Home</a></li>
+        
+            <li><a href="/archives" >Archives</a></li>
+        
+            <li><a href="/tags" >Tags</a></li>
+        
+            <li><a href="/links" >Links</a></li>
+        
+            <li><a href="/about" >About</a></li>
+        
+    </ul>
+</header>
+    <div class="main">
+        
+    <article>
+    <h1 class='post-title'>
+        <span>Angular.js使用感受</span>
+    </h1>
+    <section class='post-content'>
+        
+            
+        
+        <p>从前对Angular的了解只是在别人的文章中，从来没写过什么实际的大项目，现在接手的项目是使用Angular开发的，先撸一遍基础概念，然后看项目代码来学习，前后也快一个月了，用起来感觉还不错，记录一下感受。<br><span id="more"></span></p>
+<h2 id="喜欢的地方"><a href="#喜欢的地方" class="headerlink" title="喜欢的地方:"></a>喜欢的地方:</h2><p>作为一个MVVM框架，双向数据绑定是特色之一，我个人还是喜欢mustach的写法，因为简单。依赖注入则是另一个特色，一个很方便的功能，你可以将自己的代码按照一套标准来划分，放在不同的文件夹中，当你的controller需要某个功能时，就将它添加到依赖数组中，能让你更清晰地管理代码。</p>
+<p>filter也是一个好用的点，前端展示的数据肯定都是很直观易懂的文字，对国内用户来说就是中文，但是在数据库中的值大部分不会直接存储中文，所以这时可以做好约定，数据库中来存key，前端来通过key来转化成对应的value，这就可以交给filter来做。可以自定义过滤器，其实就是一个操作数据并返回处理结果的函数。</p>
+<p>使用<code>$resource</code>可以很方便地与RESTful服务端进行交互,自己定ActionName,配置<code>url</code>,<code>type</code>和<code>params</code>定义一个请求，便于管理。<br>能够通过各种指令扩展HTML本身也是很强大的能力，善用指令，能让开发效率大幅提升。而且可以绑定表达式，就可以更方便的做一些事情，比如动态绑定class。</p>
+<h2 id="蛋疼的地方"><a href="#蛋疼的地方" class="headerlink" title="蛋疼的地方:"></a>蛋疼的地方:</h2><p><code>angular.module()</code>: 一说module就能想到模块，但是这里的module好像和模块有很大不同。。。通常情况下一个应用里应该只有一个<code>ng-app</code>(?),所以<code>angular.module()</code>好像也就那么一个- -。</p>
+<p>Angular中ng-model对checkbox控件的绑定比较麻烦。通常状况下，一组checkbox的最终值应该是一个包含每个选中项的数组，但是在Angular中如果你把ng-model绑定到同一个变量，当你选中其中一个，其他所有的都会变成选中状态，再取消操作，所有其他项也随之取消。当你用<code>ng-true-value</code>为每个checkbox绑定不同值后，这组checkbox的作用就变得像radio一样了。。。总之就是麻烦，需要自己再进行处理一下。</p>
+<p>Angular的错误信息太不友好了，太不直观，起初还对点一下错误信息跳转到官网这种方式有点新奇感，后来对Angular的报错方式累觉不爱/再见</p>
+<p>不喜欢Angular自定义组件的方式，Angular中叫指令，<code>template</code>使用拼接字符串的方式写的，这样编写起来就很不友好。</p>
+<h2 id="另外"><a href="#另外" class="headerlink" title="另外:"></a>另外:</h2><p>的确，Angular.js很重，因为他内置好了很多东西，这种好坏是仁者见仁智者见智的，有些很常用的东西，比如动画，jQLite，SPA中要用到的router(好像某版本后分离出去了)等等就直接给你内置好了，你拿来用就好了，更方便，另一方面，这样也出现了一个问题，当你选择Angular来开发时，你的项目最好是一个大型项目，否则在一个简单的页面中使用Angular，就会显得格外的重。</p>
+<p>数据绑定，监听虽然好用，但是还是要注意适度，否则会伤性能。</p>
+<p>使用<code>Angular.js</code>开发一个完整的应用的话，一般还需要一些其他addon:</p>
+<ul>
+<li><code>ui-router</code>: 路由，用来建立<code>state</code>和<code>url</code>的映射关系，不同的<code>state</code>对应着不同的UI。比本身的ngRouter好用。</li>
+<li>UI组件库: <code>Angular.js</code>的组件库不是很多，如果是开发后台管理系统的话，<code>angular-ui-bootstrap</code>就够用了。</li>
+<li>懒加载: 我接触到的是<code>ocLazyload</code>。</li>
+</ul>
+<p>后台管理系统用Angular来写真的再合适不过了。。。</p>
+<p>End</p>
+
+    </section>
+    
+        <section id="comments">
+        
+        </section>
+    
+</article>
+
+    </div>
+    <button class="feedback-btn" data-feedbackok-trigger>Hello~ 🥰</button>
+    <footer>
+    <div class="info"><span>Powered By <a href="https://hexo.io/" target="blank">Hexo</a></span>&nbsp;&nbsp;&nbsp;&nbsp;<span>Theme by <a href="https://github.com/showonne/hexo_showonne" target="blank">Showonne</a></span></div>
+</footer>
+    <script
+        src="https://cdn.feedbackok.com/widget.js"
+        data-pid="0m524p3"
+        async
+        defer
+    ></script>
+    
+<script src="/js/index.js"></script>
+
+</body>
+</html>

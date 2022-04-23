@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <title>showonne</title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/tomorrow-night.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+    <header>
+    <span class="banner"><a href="/">showonne</a></span>
+    <span class="menu">Menu</span>
+    <ul class="menu_list hide">
+        
+            <li><a href="/" >Home</a></li>
+        
+            <li><a href="/archives" >Archives</a></li>
+        
+            <li><a href="/tags" >Tags</a></li>
+        
+            <li><a href="/links" >Links</a></li>
+        
+            <li><a href="/about" >About</a></li>
+        
+    </ul>
+</header>
+    <div class="main">
+        
+    <article>
+    <h1 class='post-title'>
+        <span>回头看看自己star过的项目</span>
+    </h1>
+    <section class='post-content'>
+        
+            
+        
+        <p>回头浏览一下当时star过的开源项目，看看这段时间都学到了<br>什么，用到了什么。<br><span id="more"></span></p>
+<h4 id="cnpm"><a href="#cnpm" class="headerlink" title="cnpm"></a><a target="_blank" rel="noopener" href="https://github.com/cnpm/cnpmjs.org">cnpm</a></h4><p>淘宝npm镜像</p>
+<h4 id="markdown-js"><a href="#markdown-js" class="headerlink" title="markdown-js"></a><a target="_blank" rel="noopener" href="https://github.com/evilstreak/markdown-js">markdown-js</a></h4><p>markdown的一个javascript解析器，当时应该是为了让自己的应<br>用支持md格式找的相关库，不过当时好像没用明白，最后选择了<br><code>marked</code>。</p>
+<h4 id="node-browserify"><a href="#node-browserify" class="headerlink" title="node-browserify"></a><a target="_blank" rel="noopener" href="https://github.com/substack/node-browserify">node-browserify</a></h4><p>Browserify让你可以在浏览器端使用<code>require(&#39;moudles&#39;)</code>打包<br>你的所有依赖。<br>你可以在自己的<code>main.js</code>中使用Node.js的<code>require()</code>语法，比<br>如:<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var sub = require(&#x27;sub&#x27;);</span><br></pre></td></tr></table></figure><br>然后通过Browserify打包你的文件，他会帮你处理这些依赖。<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">browserify main.js -o bundle.js</span><br></pre></td></tr></table></figure><br>然后在页面中使用<code>bundle.js</code>就可以了~<br>最开始看到这个东西的时候以为就是可以在浏览器使用<code>require()</code><br>后来在对Js的学习过程中才发现其实这货对Js模块化有很大的意<br>义。</p>
+<h4 id="amdjs-api"><a href="#amdjs-api" class="headerlink" title="amdjs-api"></a><a target="_blank" rel="noopener" href="https://github.com/amdjs/amdjs-api">amdjs-api</a></h4><p>呃，Js模块化发展过程产物，AMD规范，在学习Js模块化历史的<br>过程中看到的。</p>
+<h4 id="amazeui"><a href="#amazeui" class="headerlink" title="amazeui"></a><a target="_blank" rel="noopener" href="https://github.com/amazeui/amazeui">amazeui</a></h4><p>中国首个移动优先的模块化HTML5前端框架，当时amaze做活动<br>star送马克杯(-,-就star了，其实用法和bootstrap这种差不多<br>都是UI框架，现在amazeui有webapp和react版本的组件框架，<br>使用起来会方便很多。</p>
+<h4 id="React"><a href="#React" class="headerlink" title="React"></a><a target="_blank" rel="noopener" href="https://github.com/facebook/react">React</a></h4><p>目前最火的前端框架，组件化的思想和使用虚拟DOM的性能让很<br>多开发者为之欢呼。组件化在前端发展过程中已经得到大家认<br>可，可复用性强，另外大家发现操作DOM对性能影响很大，因此<br>虚拟DOM也成了一个优势(心疼jQuery，从从前的必备库变成大<br>家拿来黑的点也真是够了。。。)。</p>
+<h4 id="React-Native"><a href="#React-Native" class="headerlink" title="React-Native"></a><a target="_blank" rel="noopener" href="https://github.com/facebook/react-native">React-Native</a></h4><p>使用React开发手机原生应用，现在ios和android版本都已经发<br>布了，RN的宗旨就是做到”learn once,write anywhere”,尝试着<br>跑了一下官方demo，感觉好神奇。。。</p>
+<h4 id="react-mixin"><a href="#react-mixin" class="headerlink" title="react-mixin"></a><a target="_blank" rel="noopener" href="https://github.com/brigand/react-mixin">react-mixin</a></h4><p>react-mixin,并没有写过 - -@。</p>
+<h4 id="Coding"><a href="#Coding" class="headerlink" title="Coding"></a><a target="_blank" rel="noopener" href="https://github.com/Coding/Coding.github.io">Coding</a></h4><p>东半球最受欢迎的代码托管平台，这个hexo博客就是在WebIDE中<br>托管的，哈哈，再也不用担心blog文件夹丢失了~</p>
+<h4 id="hjs-webpack"><a href="#hjs-webpack" class="headerlink" title="hjs-webpack"></a><a target="_blank" rel="noopener" href="https://github.com/HenrikJoreteg/hjs-webpack">hjs-webpack</a></h4><p>可以帮你快速配置一个使用es6，react，webpack的开发环境，<br>不过这种东西还是自己配置更舒服些吧，haha~</p>
+<h4 id="stf"><a href="#stf" class="headerlink" title="stf"></a><a target="_blank" rel="noopener" href="https://github.com/openstf/stf">stf</a></h4><p>通过浏览器控制和管理安卓设备，拿来debug应该会很方便，没<br>用过。。。</p>
+<h4 id="iScroll"><a href="#iScroll" class="headerlink" title="iScroll"></a><a target="_blank" rel="noopener" href="https://github.com/cubiq/iscroll">iScroll</a></h4><p>smooth scrolling for the web，浏览器滑动解决方案。</p>
+<h4 id="noder-react-native"><a href="#noder-react-native" class="headerlink" title="noder-react-native"></a><a target="_blank" rel="noopener" href="https://github.com/soliury/noder-react-native">noder-react-native</a></h4><p>用react-native写的cnodejs的web app。</p>
+<h4 id="lodash"><a href="#lodash" class="headerlink" title="lodash"></a><a target="_blank" rel="noopener" href="https://github.com/lodash/lodash">lodash</a></h4><p>Js工具库，提供了一些方便，高效的数组or对象处理方法。</p>
+<h4 id="Socket-IO"><a href="#Socket-IO" class="headerlink" title="Socket.IO"></a><a target="_blank" rel="noopener" href="https://github.com/socketio/socket.io">Socket.IO</a></h4><p>为Node.js服务应用提供的实时应用框架，API简单，功能强大，<br>浏览器兼容好。</p>
+<h4 id="N1"><a href="#N1" class="headerlink" title="N1"></a><a target="_blank" rel="noopener" href="https://github.com/nylas/N1">N1</a></h4><p>使用Electron, React, and Flux构建的开源邮件客户端。</p>
+<h4 id="marked"><a href="#marked" class="headerlink" title="marked"></a><a target="_blank" rel="noopener" href="https://github.com/chjj/marked">marked</a></h4><p>markdown解析or生成库，方便好用。</p>
+<h4 id="node"><a href="#node" class="headerlink" title="node"></a><a target="_blank" rel="noopener" href="https://github.com/nodejs/node">node</a></h4><p>前端发展上的里程碑。</p>
+<h4 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a><a target="_blank" rel="noopener" href="https://github.com/vuejs/vue">Vue</a></h4><p>简单且强大的前端MVVM框架，API简单易用，以数据驱动视图，<br>让Web应用性能更好。</p>
+<h4 id="js-yaml"><a href="#js-yaml" class="headerlink" title="js-yaml"></a><a target="_blank" rel="noopener" href="https://github.com/nodeca/js-yaml">js-yaml</a></h4><p>用来解析yaml的js库。</p>
+<h4 id="CSS-Secrets"><a href="#CSS-Secrets" class="headerlink" title="CSS-Secrets"></a><a target="_blank" rel="noopener" href="https://github.com/cssmagic/CSS-Secrets">CSS-Secrets</a></h4><p>由CSS魔法翻译的CSS书，解读了一些神奇的CSS效果，让你重<br>拾CSS的乐趣。</p>
+<h4 id="fetch"><a href="#fetch" class="headerlink" title="fetch"></a><a target="_blank" rel="noopener" href="https://github.com/github/fetch">fetch</a></h4><p>fetch API,以promise风格来写网络请求，将来应该可以取代<br>xhr吧。。。fetch请求默认<strong>不带cookie</strong>！</p>
+<h4 id="js-module-7day"><a href="#js-module-7day" class="headerlink" title="js-module-7day"></a><a target="_blank" rel="noopener" href="https://github.com/Huxpro/js-module-7day">js-module-7day</a></h4><p>JavaScript模块化七日谈，Hux黄玄写的一个关于Js模块化的<br>Slide，讲得很好，是一个浪漫极客，不要太羡慕。</p>
+<h4 id="chalk"><a href="#chalk" class="headerlink" title="chalk"></a><a target="_blank" rel="noopener" href="https://github.com/chalk/chalk">chalk</a></h4><p>可以让你的命令行字符串变得colorful。</p>
+<h4 id="gulp-nodemon"><a href="#gulp-nodemon" class="headerlink" title="gulp-nodemon"></a><a target="_blank" rel="noopener" href="https://github.com/JacksonGariety/gulp-nodemon">gulp-nodemon</a></h4><p>用来启动node服务的gulp插件。</p>
+<h4 id="browser-sync"><a href="#browser-sync" class="headerlink" title="browser-sync"></a><a target="_blank" rel="noopener" href="https://github.com/BrowserSync/browser-sync">browser-sync</a></h4><p>浏览器同步调试工具，再也不用手动刷新啦。</p>
+<p>。。。写不动了，以后有时间再补吧，回头看了看自己star过<br>的项目，有的还能想起来当时为什么会用到这写东西，也有的<br>根本就没用过，不过都是学习的过程。</p>
+<p>平时通过微博，论坛等途径了解到的东西还是不少的，以后的<br>主要任务就是逐渐消化了，并且要多写！</p>
+
+    </section>
+    
+        <section id="comments">
+        
+        </section>
+    
+</article>
+
+    </div>
+    <button class="feedback-btn" data-feedbackok-trigger>Hello~ 🥰</button>
+    <footer>
+    <div class="info"><span>Powered By <a href="https://hexo.io/" target="blank">Hexo</a></span>&nbsp;&nbsp;&nbsp;&nbsp;<span>Theme by <a href="https://github.com/showonne/hexo_showonne" target="blank">Showonne</a></span></div>
+</footer>
+    <script
+        src="https://cdn.feedbackok.com/widget.js"
+        data-pid="0m524p3"
+        async
+        defer
+    ></script>
+    
+<script src="/js/index.js"></script>
+
+</body>
+</html>
