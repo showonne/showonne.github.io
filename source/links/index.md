@@ -3,8 +3,21 @@ title: links
 date: 2016-12-21 23:18:40
 tags: ['小伙伴们']
 ---
-友链专用页面。
 
+工具
+- [正则](https://regexper.com/#)
+
+电子书
+- [ES6 入门教程](https://es6.ruanyifeng.com/)
+- [JavaScript Promise迷你书](http://liubin.org/promises-book/#introduction)
+
+博客收录
+- [https://imququ.com/](https://imququ.com/)
+
+因吹斯汀
+- [渐变色](https://uigradients.com/#CitrusPeel)
+
+友链
 - [HelloVass](http://hellovass.info/) -- 反装逼联盟首领
 - [Bellorchid](http://blog.bellorchid.info/) -- Black Gay.
 - [Cheri](http://cheri.love/) -- 文艺旭
