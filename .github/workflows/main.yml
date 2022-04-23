@@ -1,24 +1,18 @@
-name: Deploy
-
+name: Build and Deploy
 on: [push]
-
 jobs:
-  build:
-    name: Build
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Clean
-      uses: heowc/action-hexo@main
+    - name: Checkout
+      uses: actions/checkout@master
       with:
-        args: clean
-    - name: Generate
-      uses: heowc/action-hexo@main
-      with:
-        args: generate
-    - name: Deploy
-      uses: heowc/action-hexo@main
+        submodules: true
+
+    - name: Build and Deploy
+      uses: solybum/hexo-deploy@master
       env:
-        EMAIL: 918677896@qq.com
-        NAME: showonne
-      with:
-        args: deploy
+        PERSONAL_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        PUBLISH_REPOSITORY: solybum/solybum.github.io # The repository the action should deploy to.
+        BRANCH: master  # The branch the action should deploy to.
+        PUBLISH_DIR: ./public # The folder the action should deploy.
