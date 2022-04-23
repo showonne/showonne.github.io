@@ -23,12 +23,16 @@ jobs:
           ${{ runner.os }}-node-
     - name: Install Dependencies
       if: steps.cache.outputs.cache-hit != 'true'
-      run: npm i
+      run: npm ci
     
+    # log env
+    - name: echo
+      run: |
+        echo "${{ secrets.DEPLOY_KEY }} ..."
     # Deploy hexo blog website.
     - name: Deploy
       id: deploy
-      uses: sma11black/hexo-action@v1.0.3
+      uses: sma11black/hexo-action@v1.0.4
       with:
         deploy_key: ${{ secrets.DEPLOY_KEY }}
         user_name: showonne  # (or delete this input setting to use bot account)
