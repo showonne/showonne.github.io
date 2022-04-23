@@ -5,6 +5,9 @@
   "hexo": {
     "version": "3.9.0"
   },
+  "scripts": {
+    "build": "hexo generate"
+  },
   "dependencies": {
     "hexo": "^3.7.0",
     "hexo-cli": "^1.1.0",
