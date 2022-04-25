@@ -9,6 +9,7 @@ tags: ['小伙伴们']
 - [历史版本Chrome下载](https://chromium.cypress.io/)
 - [生成border-radius](https://9elements.github.io/fancy-border-radius/full-control.html)
 - [画图用](https://excalidraw.com/)
+- [hex-rgb](https://www.webfx.com/web-design/hex-to-rgb/)
 
 电子书
 - [ES6 入门教程](https://es6.ruanyifeng.com/)
