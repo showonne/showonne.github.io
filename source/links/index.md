@@ -6,10 +6,16 @@ tags: ['小伙伴们']
 
 工具
 - [正则](https://regexper.com/#)
+- [历史版本Chrome下载](https://chromium.cypress.io/)
+- [生成border-radius](https://9elements.github.io/fancy-border-radius/full-control.html)
+- [画图用](https://excalidraw.com/)
 
 电子书
 - [ES6 入门教程](https://es6.ruanyifeng.com/)
 - [JavaScript Promise迷你书](http://liubin.org/promises-book/#introduction)
+
+文章
+- [build-your-own-react](https://pomb.us/build-your-own-react/)
 
 博客收录
 - [https://imququ.com/](https://imququ.com/)
